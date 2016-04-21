@@ -7,12 +7,12 @@ public class Player {
 
 	public static void main(String[] args) {
 		// static collection of cards for now.
-		final int numDimType = 10;
-		final int numDimVal = 10;
+		final int numDimType = 4;
+		final int numDimVal = 3;
 
 		Random random = new Random(0);
 
-		final int numCards = 15;
+		final int numCards = 9;
 		Card[] handOfCards = new Card[numCards];
 		for (int i = 0; i < numCards; i++) {
 			Dimension[] currDimensions = new Dimension[numDimType];
@@ -32,11 +32,20 @@ public class Player {
 		List<Integer[]> sets = solver.getSets(handOfCards);
 
 		System.out.println("Sets: ");
+		int setCount = 0;
 		for (Integer[] set : sets) {
+			System.out.println("Set " + setCount + ":");
 			for (int i = 0; i < set.length - 1; i++) {
-				System.out.print("Card " + i + ": " + set[i] + ", ");
+				if (set[i] < 10)
+					System.out.println("Card " + set[i] + " : " + handOfCards[set[i]].toString() + ", ");
+				else
+					System.out.println("Card " + set[i] + ": " + handOfCards[set[i]].toString() + ", ");
 			}
-			System.out.println("Card " + (set.length - 1) + ": " + set[set.length - 1]);
+			if (set[set.length - 1] < 10)
+				System.out.println("Card " + set[set.length - 1] + " : " + handOfCards[set[set.length - 1]]);
+			else
+				System.out.println("Card " + set[set.length - 1] + ": " + handOfCards[set[set.length - 1]]);
+			setCount++;
 		}
 	}
 }

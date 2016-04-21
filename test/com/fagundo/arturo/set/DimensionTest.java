@@ -33,6 +33,6 @@ public class DimensionTest {
 	public final void testToString() {
 		Dimension dimension1 = new Dimension(1, 2);
 
-		assertEquals(dimension1.toString(), "Type: 1, Value: 2");
+		assertEquals(dimension1.toString(), "Value: 2");
 	}
 }

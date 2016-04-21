@@ -47,4 +47,9 @@ public class CardComparison {
 
 		return bitMask == ((CardComparison) otherCardComparison).getBitMask();
 	}
+
+	@Override
+	public int hashCode() {
+		return (int) (bitMask ^ (bitMask >>> 32));
+	}
 }

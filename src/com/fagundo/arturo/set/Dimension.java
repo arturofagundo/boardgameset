@@ -55,6 +55,6 @@ public class Dimension {
 
 	@Override
 	public String toString() {
-		return new String("Type: " + type + ", Value: " + value);
+		return new String("Value: " + value);
 	}
 }
