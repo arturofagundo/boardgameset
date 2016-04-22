@@ -1,14 +1,19 @@
 package com.fagundo.arturo.set;
 
+import java.util.Arrays;
+
 /*
  * Represents a comparison of the dimensions between 2 cards in the game of set. This 
  * entity can be used compared to other CardComparison objects to determine how 3 or more
  * cards may compare to one another.
+ * 
+ * @throws IllegalArgumentException if the type of dimension does not match across all 
+ * dimensions in the dimension array.
  */
 public class CardComparison {
 
-	private long bitMask;
-	private static final int MAX_DIMENSIONS = 64;
+	private int[] bitMask;
+	private static final int SIZE_OF_INT = 32;
 
 	CardComparison(Card lhCard, Card rhCard) {
 		if (lhCard == null || rhCard == null)
@@ -19,12 +24,19 @@ public class CardComparison {
 		if (lhDimensions.length != rhDimensions.length)
 			throw new IllegalArgumentException("Cards include different number of dimensions");
 
-		if (lhDimensions.length > MAX_DIMENSIONS)
-			throw new IllegalArgumentException("The dimensional comparison cannot be expressed as a bit mask");
+		// Need to calculate the size of the bitMask array
+		final int bitMaskLen = lhDimensions.length / SIZE_OF_INT + 1;
+		bitMask = new int[bitMaskLen];
 
+		int bitMaskIndex = 0;
 		for (int i = 0; i < lhDimensions.length; i++) {
+			bitMaskIndex = i / SIZE_OF_INT;
+			if (lhDimensions[i].getType() != rhDimensions[i].getType()) {
+				throw new IllegalArgumentException("Dimension types " + i + " do not match");
+			}
+
 			if (lhDimensions[i].getValue() == rhDimensions[i].getValue()) {
-				bitMask |= 1 << i;
+				bitMask[bitMaskIndex] |= 1 << i;
 			}
 		}
 	}
@@ -36,8 +48,9 @@ public class CardComparison {
 	 * dimensions associated with the cards passed into the constructor of this
 	 * object
 	 */
-	public long getBitMask() {
-		return bitMask;
+	public int[] getBitMask() {
+		// return defensive copy of internal bitMask array
+		return Arrays.copyOf(bitMask, bitMask.length);
 	}
 
 	@Override
@@ -45,11 +58,20 @@ public class CardComparison {
 		if (!(otherCardComparison instanceof CardComparison))
 			return false;
 
-		return bitMask == ((CardComparison) otherCardComparison).getBitMask();
+		int[] otherBitMask = ((CardComparison) otherCardComparison).getBitMask();
+		if (otherBitMask.length != bitMask.length)
+			return false;
+
+		for (int i = 0; i < bitMask.length; i++) {
+			if (bitMask[i] != otherBitMask[i]) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		return (int) (bitMask ^ (bitMask >>> 32));
+		return Arrays.hashCode(bitMask);
 	}
 }
