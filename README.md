@@ -15,6 +15,7 @@ we solve for an arbitrary number of cards in the set specified as an argument to
 <b>Unit Tests:</b> Under the 'tests' directory there are tests written in Junit4 for all classes except the 'Player' class. The player 
 class includes a 'main' and can be modified to specify an arbitrary number of dimensions, values and cards. Currently these values are
 specified as 4, 3 and 3 respectively.
+
 <b>Running the code:</b>
 * Under Eclipse: Import the project. Run unit tests or player class directly
 * Command Line: Build the jar file (mvn clean install), and run (java -jar BoardGameSet-0.0.1-SNAPSHOT.jar).
